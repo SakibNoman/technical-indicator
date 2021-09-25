@@ -7,6 +7,7 @@ const Home = () => {
 
     const [tData, setTData] = useState(tableData.slice(0, 2))
     const [options, setOptions] = useState([])
+    const [tDataOptions, setTDataOptions] = useState([])
 
     useEffect(() => {
         let options = [];
@@ -16,9 +17,19 @@ const Home = () => {
         setOptions(options)
     }, [])
 
+    useEffect(() => {
+        let options = [];
+        tData.forEach(each => {
+            options.push((each.options).toUpperCase())
+        })
+        setTDataOptions(options)
+    }, [tData])
+
     const handleChange = (e) => {
-        console.log(e.target.value);
-        if (!(options.slice(0, tData.length)).includes((e.target.value).toUpperCase())) {
+
+        // e.target[0].selected = true;
+
+        if (!(tDataOptions.slice(0, tData.length)).includes((e.target.value).toUpperCase())) {
             const newTData = [...tData];
             const newEntry = tableData.filter(each => (each.options).toUpperCase() == (e.target.value).toUpperCase())
             newTData.push(newEntry[0]);
@@ -30,14 +41,11 @@ const Home = () => {
     }
 
     const handleChangeAgain = (e, index) => {
-        console.log('index', index, e.target.value);
 
-        if (!(options.slice(0, tData.length)).includes((e.target.value).toUpperCase())) {
+        if (!(tDataOptions.slice(0, tData.length)).includes((e.target.value).toUpperCase())) {
 
             const newTData = [...tData];
             newTData[index] = tableData.filter(each => (each.options).toUpperCase() == (e.target.value).toUpperCase())[0]
-            console.log(newTData);
-
             setTData(newTData)
         }
         else {
@@ -49,7 +57,7 @@ const Home = () => {
         <div className={styles.container} >
             <div className={styles.bleedArea} >
                 <div className={styles.mainArea} >
-                    <table>
+                    <table className={styles.table} >
                         <tr>
                             <th>Stocks</th>
                             <th></th>
@@ -66,7 +74,7 @@ const Home = () => {
                             tData.map((data, index) =>
                                 <tr>
                                     <td>
-                                        <Options index={index} handleChangeAgain={handleChangeAgain} value={data.options} options={options} />
+                                        <Options key={index} index={index} handleChangeAgain={handleChangeAgain} value={data.options} options={options} />
                                     </td>
                                     <td></td>
                                     <td>{data.indi1}</td>
@@ -83,14 +91,23 @@ const Home = () => {
                         <tr>
                             <td>
                                 <select onChange={(e) => handleChange(e)} name="" id="">
-                                    <option>Select Symbol</option>
+                                    <option selected >Select Symbol</option>
                                     {
                                         options.map(each =>
-                                            <option>{each}</option>
+                                            <option key={each} > {each} </option>
                                         )
                                     }
                                 </select>
                             </td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
                         </tr>
 
                     </table>
