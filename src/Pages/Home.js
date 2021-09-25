@@ -1,25 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import tableData from '../Data/tableData';
+import Options from '../components/Options';
+import { tableData } from '../Data/tableData';
 import styles from '../Styles/Module/Home.module.css';
 
 const Home = () => {
 
-    const [tData, setTData] = useState(tableData)
+    const [tData, setTData] = useState(tableData.slice(0, 2))
     const [options, setOptions] = useState([])
 
     useEffect(() => {
         let options = [];
-        tData.forEach(each => {
+        tableData.forEach(each => {
             options.push((each.options).toUpperCase())
         })
         setOptions(options)
-    }, [tData])
+    }, [])
 
     const handleChange = (e) => {
-        console.log(options);
-        console.log(options.includes((e.target.value).toUpperCase()));
-        if (!options.includes((e.target.value).toUpperCase())) {
-            const newTData = [...tData, tableData[0]];
+        console.log(e.target.value);
+        if (!(options.slice(0, tData.length)).includes((e.target.value).toUpperCase())) {
+            const newTData = [...tData];
+            const newEntry = tableData.filter(each => (each.options).toUpperCase() == (e.target.value).toUpperCase())
+            newTData.push(newEntry[0]);
+            setTData(newTData)
+        }
+        else {
+            alert('Can\'t select identical Symbol')
+        }
+    }
+
+    const handleChangeAgain = (e, index) => {
+        console.log('index', index, e.target.value);
+
+        if (!(options.slice(0, tData.length)).includes((e.target.value).toUpperCase())) {
+
+            const newTData = [...tData];
+            newTData[index] = tableData.filter(each => (each.options).toUpperCase() == (e.target.value).toUpperCase())[0]
+            console.log(newTData);
+
             setTData(newTData)
         }
         else {
@@ -32,7 +50,6 @@ const Home = () => {
             <div className={styles.bleedArea} >
                 <div className={styles.mainArea} >
                     <table>
-
                         <tr>
                             <th>Stocks</th>
                             <th></th>
@@ -45,31 +62,33 @@ const Home = () => {
                             <th>Indi7</th>
                             <th>Indi8</th>
                         </tr>
-
-
                         {
-                            tData.map(each =>
+                            tData.map((data, index) =>
                                 <tr>
-                                    <td>{each.options}</td>
+                                    <td>
+                                        <Options index={index} handleChangeAgain={handleChangeAgain} value={data.options} options={options} />
+                                    </td>
                                     <td></td>
-                                    <td>AD</td>
-                                    <td>ADX</td>
-                                    <td>AreaRSI</td>
-                                    <td>Indi4</td>
-                                    <td>Indi5</td>
-                                    <td>Indi6</td>
-                                    <td>Indi7</td>
-                                    <td>Indi8</td>
+                                    <td>{data.indi1}</td>
+                                    <td>{data.indi2}</td>
+                                    <td>{data.indi3}</td>
+                                    <td>{data.indi4}</td>
+                                    <td>{data.indi5}</td>
+                                    <td>{data.indi6}</td>
+                                    <td>{data.indi7}</td>
+                                    <td>{data.indi8}</td>
                                 </tr>
                             )
                         }
                         <tr>
                             <td>
                                 <select onChange={(e) => handleChange(e)} name="" id="">
-                                    <option value="one">One</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
-                                    <option value="four">Four</option>
+                                    <option>Select Symbol</option>
+                                    {
+                                        options.map(each =>
+                                            <option>{each}</option>
+                                        )
+                                    }
                                 </select>
                             </td>
                         </tr>
