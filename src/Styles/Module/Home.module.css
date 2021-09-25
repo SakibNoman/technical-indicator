@@ -48,3 +48,16 @@
 select {
   width: 100%;
 }
+
+.icons {
+  color: #10577f !important;
+  text-align: left !important;
+}
+.icons svg {
+  margin: 0 2px;
+  padding: 2px;
+}
+.icons svg:hover {
+  background: #10577f;
+  color: white;
+}

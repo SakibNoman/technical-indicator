@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Icons from '../components/Icons';
 import Options from '../components/Options';
 import { tableData } from '../Data/tableData';
 import styles from '../Styles/Module/Home.module.css';
@@ -76,7 +77,7 @@ const Home = () => {
                                     <td>
                                         <Options key={index} index={index} handleChangeAgain={handleChangeAgain} value={data.options} options={options} />
                                     </td>
-                                    <td></td>
+                                    <td className={styles.icons} > <Icons /> </td>
                                     <td>{data.indi1}</td>
                                     <td>{data.indi2}</td>
                                     <td>{data.indi3}</td>
